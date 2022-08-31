@@ -49,19 +49,39 @@ class Router
     }
 
     /**
+     * Отсекаем от запроса GET-параметр для избежания ошибок
+     * @param $url
+     * @return mixed|string
+     */
+    protected static function removeGetParams($url)
+    {
+        if ($url) {
+            $params = explode('&', $url, 2);
+            if (false === str_contains($params[0], '=')) {
+                return rtrim($params[0], '/');
+            }
+            return '';
+        }
+        return $url;
+    }
+
+    /**
      * Метод для вызова нужного метода контроллера согласно таблице маршрутов
      * @param $url - кусок адресной строки относительно корня проекта
      * @return void
      */
     public static function dispatch($url)
     {
+        $url = self::removeGetParams($url);
         if (self::matchRoutes($url)) {
             $controller = 'app\controllers\\' . self::$currentRoute['admin_prefix'] . self::$currentRoute['controller'] . 'Controller';
             if (class_exists($controller)) {
                 $controllerObject = new $controller(self::$currentRoute);
+                $controllerObject->getModel();
                 $action = self::$currentRoute['action'] . 'Action';
                 if (method_exists($controllerObject, $action)) {
                     $controllerObject->$action();
+                    $controllerObject->getView();
                 } else {
                     throw new \Exception("Метод {$controller}::{$action} не найден", 404);
                 }

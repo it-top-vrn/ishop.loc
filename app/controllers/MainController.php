@@ -2,8 +2,11 @@
 
 namespace app\controllers;
 
-class MainController
+use core\Controller;
+
+class MainController extends Controller
 {
+    public string $view = 'own';
     public function indexAction()
     {
         echo __METHOD__;
