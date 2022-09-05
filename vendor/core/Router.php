@@ -58,7 +58,7 @@ class Router
         if ($url) {
             $params = explode('&', $url, 2);
             if (false === str_contains($params[0], '=')) {
-                return rtrim($params[0], '/');
+                return $params;
             }
             return '';
         }
@@ -100,12 +100,19 @@ class Router
      */
     public static function matchRoutes($url) : bool
     {
+        if (is_array($url)) {
+            $getParam = $url[1];
+            $url = rtrim($url[0], "/");
+        }
         foreach (self::$routes as $pattern => $route) {
             if (preg_match("#{$pattern}#", $url, $matches)) {
                 foreach ($matches as $key => $value) {
                     if (is_string($key)) {
                         $route[$key] = $value;
                     }
+                }
+                if (isset($getParam)) {
+                    $route['get_param'] = $getParam;
                 }
                 if (empty($route['action'])) {
                     $route['action'] = 'index';
