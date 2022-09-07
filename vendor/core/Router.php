@@ -101,7 +101,9 @@ class Router
     public static function matchRoutes($url) : bool
     {
         if (is_array($url)) {
-            $getParam = $url[1];
+            if (isset($url[1])) {
+                $getParam = $url[1];
+            }
             $url = rtrim($url[0], "/");
         }
         foreach (self::$routes as $pattern => $route) {

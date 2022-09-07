@@ -2,6 +2,8 @@
 
 namespace core;
 
+use RedBeanPHP\R;
+
 /**
  * Класс вида
  */
@@ -72,5 +74,39 @@ class View
         $out .= '<meta name="description" content="' . $this->meta['description'] . '">' . PHP_EOL;
         $out .= '<meta name="keywords" content="' . $this->meta['keywords'] . '">' . PHP_EOL;
         return $out;
+    }
+
+    /**
+     * Отлавливает все запросы к базе на текущей странице
+     * @return void
+     */
+    public function getDataBaseLog()
+    {
+        if (DEBUG) {
+            $log = R::getDatabaseAdapter()
+                ->getDatabase()
+                ->getLogger();
+            $logs = array_merge($log->grep('SELECT'), $log->grep('INSERT'), $log->grep('UPDATE'), $log->grep('DELETE'));
+            debug($logs);
+        }
+    }
+
+    /**
+     * Подключает фаил с частью вёрстки
+     * @param $file - путь до файла
+     * @param $data - данные для передачи в файл с вёрсткой
+     * @return void
+     */
+    public function getPart($file, $data = null)
+    {
+        if (is_array($data)) {
+            extract($data);
+        }
+        $file = APP . "/views/{$file}.php";
+        if (is_file($file)) {
+            require $file;
+        } else {
+            echo "File {$file} not found...";
+        }
     }
 }
