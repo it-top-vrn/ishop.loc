@@ -2,13 +2,16 @@
 
 namespace app\controllers;
 
-use core\Controller;
+use RedBeanPHP\R;
 
-class MainController extends Controller
+class MainController extends AppController
 {
-    public string $view = 'own';
     public function indexAction()
     {
-        $this->setMeta('Стартовая страница','Описание страницы','Страница...');
+        $slides = R::findAll('slider');
+
+        $products = $this->model->getHits(1, 3);
+
+        $this->setData(compact('slides', 'products'));
     }
 }
