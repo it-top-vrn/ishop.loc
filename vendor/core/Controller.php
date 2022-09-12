@@ -17,7 +17,7 @@ abstract class Controller
      * Массив с метаданными страницы
      * @var array
      */
-    public array $meta = [];
+    public array $meta = ['title' => '', 'description' => '', 'keywords' => ''];
 
     /**
      * Название шаблона страницы
@@ -32,7 +32,7 @@ abstract class Controller
     public string $view = '';
 
     /**
-     * Объект модели для текущего контрллера
+     * Объект модели для текущего контроллера
      * @var object
      */
     public object $model;

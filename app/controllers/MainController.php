@@ -2,13 +2,12 @@
 
 namespace app\controllers;
 
-use core\Controller;
-
-class MainController extends Controller
+class MainController extends AppController
 {
-    public string $view = 'own';
     public function indexAction()
     {
-        $this->setMeta('Стартовая страница','Описание страницы','Страница...');
+        $slides = $this->model->getSlidesForSlider();
+        $products = $this->model->getHits(1, 100);
+        $this->setData(compact('slides', 'products'));
     }
 }
