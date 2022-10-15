@@ -1,3 +1,8 @@
+<?php
+
+use core\App;
+
+?>
 <!doctype html>
 <html lang="en">
 <head>
@@ -74,37 +79,34 @@
 
             <nav class="navbar navbar-expand-lg navbar-light">
                 <div class="container-fluid p-0">
-                    <a class="navbar-brand" href="index.html">Shop Brand</a>
+                    <a class="navbar-brand" href="<?=PATH?>"><?= App::$app->getProperty('site_name') ?></a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
-
-                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-                            <li class="nav-item">
-                                <a class="nav-link" href="category.html">Компьютеры</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="category.html">Планшеты</a>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                    Ноутбуки
-                                </a>
-                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <li><a class="dropdown-item" href="category.html">Mac</a></li>
-                                    <li><a class="dropdown-item" href="category.html">Windows</a></li>
-                                </ul>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="category.html">Телефоны</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="category.html">Камеры</a>
-                            </li>
-                        </ul>
-                    </div>
-
+                    <?php if (!empty($categories)) : ?>
+                        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                                <?php foreach ($categories as $category) : ?>
+                                    <?php if (!isset($category['children'])) : ?>
+                                        <li class="nav-item">
+                                            <a class="nav-link" href="product/<?=$category['slug']?>"><?=$category['title']?></a>
+                                        </li>
+                                    <?php else : ?>
+                                        <li class="nav-item dropdown">
+                                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                                <?=$category['title']?>
+                                            </a>
+                                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                                <?php foreach ($category['children'] as $children) : ?>
+                                                    <li><a class="dropdown-item" href="product/<?=$children['slug']?>"><?=$children['title']?></a></li>
+                                                <?php endforeach; ?>
+                                            </ul>
+                                        </li>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
+                    <?php endif; ?>
                 </div>
             </nav>
 

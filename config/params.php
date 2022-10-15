@@ -1,5 +1,6 @@
 <?php
 return [
+    'site_name' => 'Ishop',
     'admin_email' => 'alftunner@gmail.com',
     'pagination' => '3',
     'ip_database_for_dev' => '127.0.0.1',

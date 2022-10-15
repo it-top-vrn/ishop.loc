@@ -9,5 +9,6 @@ class MainController extends AppController
         $slides = $this->model->getSlidesForSlider();
         $products = $this->model->getHits(1, 100);
         $this->setData(compact('slides', 'products'));
+        $this->setMeta("Главная страница", "description...", "keywords...");
     }
 }
